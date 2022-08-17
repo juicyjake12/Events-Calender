@@ -11,7 +11,7 @@
 //do local save functions last
 // `-javascript operator
 //seconds to time- hh.mm.ss
-
+//new-operator
 
 
 
@@ -19,28 +19,26 @@
 
 
 //time functions 
-window.onload = function () {
-  const currentTimeblocks = getCurrentTimeblocks();
+window.onload = function (getcurrentTimeblocks) {
+  const currentTimeblocks = getcurrentTimeblocks;
   const currentTime = moment();
 
   displayCurrentDate(currentTime);
   displayTimeblockRows(currentTime);
 
   document.querySelector('.container')
-    .addEventListener('click', function (event) {
-      containerClicked(event, currentTimeblocks);
-    });
-  setTimeblockText(currentTimeblocks);
+  .addEventListener('click', function (event) {
+    containerClicked(event, currentTimeblocks);
+  });
 };
-
-function getCurrentTimeblocks() {
+function getcurrentTimeblocks() {
   const currentTimeblocks = localStorage.getItem('timeblockObjects');
   return currentTimeblocks ? JSON.parse(currentTimeblocks) : [];
 }
 
 function displayCurrentDate(currentTime) {
   document.getElementById('currentDay')
-    .textContent = currentTime.format('dddd, MMMM Do');
+    .textContent = currentTime.format('dddd, MMMM Do ');
 }
 //starting class
 class Timeblock {
@@ -57,7 +55,7 @@ function displayTimeblockRows(currentTime) {
     const timeblock = createTimeblockRow(i);
     const hourCol = createColomn(createHourDiv(i), 1);
     const textArea = createColomn(createTextArea(i, currentHour), 10);
-    const saveBtn = createColomn(createSaveBtn(i), 1);
+    const saveBtn = createColomn(createsavebtn(i), 1);
     appendtimeblockColumns(timeblock, hourCol, textArea, saveBtn);
     document.querySelector('.container').appendChild(timeblock);
   }
@@ -89,9 +87,35 @@ function createTextArea(hour, currentHour){
   textArea.classList.add(getTextAreaBackgroundClass(hour, currentHour));
   return textArea;
 }
-//function getTextAreaBackgroundClass(hour, currentHour){
-  if (hour < currentHour){
-  console.log("past")
+
+
+
+
+//for loop
+
+
+
+
+
+function createsavebtn(hour){
+  const saveBtn = document.createElement("button");
+  saveBtn.classList.add("savebtn");
+  saveBtn.innerHTML = '<i class="fas fa-save"></i>';
+  saveBtn.setAttribute("data-hour", hour);
+  return saveBtn;
+}
+function appendtimeblockColumns(TimeblockRow, hourColumn, textAreaColumn, savebtnColumn ){
+  const innerColumns = [hourColumn, textAreaColumn, savebtnColumn];
+  for (let Column of innerColumns){
+    TimeblockRow.appendChild(Column);
   }
 }
-
+//local save
+function containerClicked(event, timeBlockList){
+  if (SaveButton(event)){
+    const timeblockhour = getTimeblockhour(event);
+    const textAreavalue = getTextAreavalue(timeblockhour);
+    placetimeblockinlist(//new timeblock(timeblockhour, textAreavalue, timeBlockList));
+    savetimeblocklist(timeBlockList);
+  }
+}
