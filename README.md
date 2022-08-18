@@ -6,4 +6,4 @@ what i made in this module is a event planner to plan out your busy days. why i 
 
 github url-https://github.com/juicyjake12/Events-Calender
 
-deployed url-
+deployed url-https://juicyjake12.github.io/Events-Calender/
