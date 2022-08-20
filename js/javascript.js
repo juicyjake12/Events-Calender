@@ -1,18 +1,3 @@
-//mental note- write columns left to right create container first
-//need time that updates by the day
-//start with creating a class 
-//create timeblocks
-//declare elements- hour div, textarea div, save btn div, append all 3
-//choose where i want it to display- .container from html
-// dont forget the jquery $
-//create column div
-//dont forget to return 
-//create div to column size
-//do local save functions last
-// `-javascript operator
-//seconds to time- hh.mm.ss
-//new-operator
-//time functions 
 window.onload = function () {
   const currentTimeblocks = getCurrentTimeblocks();
   const currentTime = moment();
@@ -37,14 +22,14 @@ function displayCurrentDate(currentTime) {
     .textContent = currentTime.format('dddd, MMMM Do');
 }
 
-//function display
+//timeblock class
 class TimeblockObject {
   constructor(hour, todo) {
     this.hour = hour;
     this.todo = todo;
   }
 }
-
+//creating timeblock functions
 function displayTimeblockRows(currentTime) {
   const currentHour = currentTime.hour();
   for (let i = 9; i <= 17; i++) {
@@ -90,10 +75,9 @@ function createTextArea(hour, currentHour) {
 }
 
 function getTextAreaBackgroundClass(hour, currentHour) {
-  if (hour < currentHour) {
-  } else hour === "past";
-  if (hour === currentHour) {
-  } else hour === "present";
+  return hour < currentHour ? 'past' 
+    : hour === currentHour ? 'present' 
+    : 'future';
 }
 
 function createSaveBtn(hour) {
@@ -114,24 +98,13 @@ function appendTimeblockColumns(timeblockRow, hourCol, textAreaCol, saveBtnCol) 
 //local storage
 function containerClicked(event, timeblockList) {
   if (isSaveButton(event)) {
-    const textAreaValue = getTextAreaValue(timeblockHour);
     const timeblockHour = getTimeblockHour(event);
+    const textAreaValue = getTextAreaValue(timeblockHour);
     placeTimeblockInList(new TimeblockObject(timeblockHour, textAreaValue), timeblockList);
     saveTimeblockList(timeblockList);
   }
 }
-function placeTimeblockInList(newTimeblockObj, timeblockList) {
-  if (timeblockList.length > 0) {
-    for (let savedTimeblock of timeblockList) {
-      if (savedTimeblock.hour === newTimeblockObj.hour) {
-        savedTimeblock.todo = newTimeblockObj.todo;
-        return;
-      }
-    }
-  }
-  timeblockList.push(newTimeblockObj);
-  return;
-}
+
 function isSaveButton(event) {
   return event.target.matches('button') || event.target.matches('.fa-save');
 }
@@ -143,12 +116,26 @@ function getTimeblockHour(event) {
 function getTextAreaValue(timeblockHour) {
   return document.querySelector(`#timeblock-${timeblockHour} textarea`).value;
 }
+
+function placeTimeblockInList(newTimeblockObj, timeblockList) {
+  if (timeblockList.length > 0) {
+    for (let savedTimeblock of timeblockList) {
+      if (savedTimeblock.hour === newTimeblockObj.hour) {
+        savedTimeblock.todo = newTimeblockObj.todo;
+        return;
+      }
+    }
+  } 
+  timeblockList.push(newTimeblockObj);
+  return;
+}
+
 function saveTimeblockList(timeblockList) {
   localStorage.setItem('timeblockObjects', JSON.stringify(timeblockList));
 }
 
 function setTimeblockText(timeblockList) {
-  if (timeblockList.length === 0) {
+  if (timeblockList.length === 0 ) {
     return;
   } else {
     for (let timeblock of timeblockList) {
@@ -157,3 +144,18 @@ function setTimeblockText(timeblockList) {
     }
   }
 }
+//mental note- write columns left to right create container first
+//need time that updates by the day
+//start with creating a class 
+//create timeblocks
+//declare elements- hour div, textarea div, save btn div, append all 3
+//choose where i want it to display- .container from html
+// dont forget the jquery $
+//create column div
+//dont forget to return 
+//create div to column size
+//do local save functions last
+// `-javascript operator
+//seconds to time- hh.mm.ss
+//new-operator
+//time functions 
